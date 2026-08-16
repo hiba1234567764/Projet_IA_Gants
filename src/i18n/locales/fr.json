@@ -1,0 +1,106 @@
+{
+  "common": {
+    "appName": "Gloves Detector",
+    "language": "Langue",
+    "tryAgain": "Réessayer"
+  },
+  "auth": {
+    "subtitleReset": "Entrez votre email pour réinitialiser votre mot de passe",
+    "subtitleLogin": "Connectez-vous pour commencer à scanner des gants",
+    "subtitleRegister": "Créez un compte pour commencer",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Mot de passe",
+    "sendResetLink": "Envoyer le lien",
+    "logIn": "Se connecter",
+    "createAccount": "Créer un compte",
+    "resetSentMessage": "Consultez votre email pour le lien de réinitialisation.",
+    "or": "ou",
+    "continueWithGoogle": "Continuer avec Google",
+    "forgotPassword": "Mot de passe oublié ?",
+    "backTo": "Retour à la ",
+    "noAccount": "Vous n'avez pas de compte ? ",
+    "haveAccount": "Vous avez déjà un compte ? ",
+    "register": "Inscription",
+    "logInLink": "connexion",
+    "errors": {
+      "invalidEmail": "Cette adresse email semble invalide.",
+      "invalidCredential": "Email ou mot de passe incorrect.",
+      "emailInUse": "Un compte existe déjà avec cet email.",
+      "weakPassword": "Le mot de passe doit contenir au moins 6 caractères.",
+      "accountExistsDifferentCredential": "Un compte existe déjà avec cet email via une autre méthode de connexion.",
+      "generic": "Une erreur est survenue. Veuillez réessayer."
+    }
+  },
+  "tabs": {
+    "scan": "Scanner",
+    "dashboard": "Tableau de bord",
+    "account": "Compte",
+    "docs": "Docs"
+  },
+  "account": {
+    "title": "Compte",
+    "signedIn": "Connecté",
+    "admin": "Admin",
+    "adminDescription": "Vous pouvez voir les statistiques de tous les scans",
+    "userDescription": "Vos scans sont enregistrés dans votre historique",
+    "signOut": "Se déconnecter",
+    "language": "Langue"
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "basedOnLast100AllUsers": "Basé sur les 100 derniers scans de tous les utilisateurs",
+    "allScansAllUsers": "Tous les scans de tous les utilisateurs",
+    "basedOnLast100Mine": "Basé sur vos 100 derniers scans",
+    "allScansMine": "Vos scans",
+    "loadError": "Impossible de charger les scans. Vérifiez votre connexion et réessayez.",
+    "totalScans": "Scans au total",
+    "passed": "Réussis",
+    "problems": "Problèmes",
+    "passRate": "{{rate}} % de réussite",
+    "recentScans": "Scans récents",
+    "noScans": "Aucun scan pour l'instant.",
+    "noProblemsFound": "Aucun problème trouvé",
+    "problemDetected": "Problème détecté",
+    "justNow": "À l'instant"
+  },
+  "manageAdmins": {
+    "title": "Gérer les administrateurs",
+    "description": "{{count}} comptes. Accordez ou retirez les droits admin ci-dessous.",
+    "placeholder": "utilisateur@exemple.com",
+    "search": "Rechercher",
+    "refresh": "Actualiser",
+    "loadError": "Impossible de charger les comptes. Vérifiez vos autorisations et réessayez.",
+    "noMatches": "Aucun compte ne correspond à cette recherche.",
+    "noAccounts": "Aucun profil de compte trouvé.",
+    "unknownEmail": "Email indisponible",
+    "notFound": "Aucun compte trouvé avec cet email.",
+    "searchError": "Recherche impossible pour le moment. Réessayez.",
+    "updateError": "Impossible de mettre à jour cet utilisateur. Réessayez.",
+    "nowAdmin": "{{email}} est maintenant administrateur.",
+    "noLongerAdmin": "{{email}} n'est plus administrateur.",
+    "regularUser": "Utilisateur standard",
+    "adminRole": "Admin",
+    "cantChangeSelf": "Vous ne pouvez pas vous modifier",
+    "removeAdmin": "Retirer l'admin",
+    "makeAdmin": "Rendre admin"
+  },
+  "scan": {
+    "title": "Scanner les gants",
+    "frameHint": "Placez les gants dans le cadre",
+    "cameraPermissionTitle": "Accès à la caméra requis",
+    "cameraPermissionDescription": "Nous avons besoin de votre autorisation pour utiliser la caméra afin de détecter les défauts des gants.",
+    "grantPermission": "Autoriser l'accès",
+    "analyzing": "Vérification des défauts…",
+    "noProblemsFound": "Aucun problème trouvé",
+    "problemDetected": "Problème détecté",
+    "scanAgain": "Scanner à nouveau",
+    "confidence": "{{confidence}} % de confiance"
+  },
+  "detection": {
+    "tornSeam": "couture déchirée",
+    "holeInFingertip": "trou au bout du doigt",
+    "stain": "tache",
+    "missingStitching": "couture manquante",
+    "discoloration": "décoloration"
+  }
+}

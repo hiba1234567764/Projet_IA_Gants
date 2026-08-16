@@ -1,0 +1,106 @@
+{
+  "common": {
+    "appName": "Gloves Detector",
+    "language": "Language",
+    "tryAgain": "Try again"
+  },
+  "auth": {
+    "subtitleReset": "Enter your email to reset your password",
+    "subtitleLogin": "Sign in to start scanning gloves",
+    "subtitleRegister": "Create an account to get started",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Password",
+    "sendResetLink": "Send reset link",
+    "logIn": "Log in",
+    "createAccount": "Create account",
+    "resetSentMessage": "Check your email for a link to reset your password.",
+    "or": "or",
+    "continueWithGoogle": "Continue with Google",
+    "forgotPassword": "Forgot password?",
+    "backTo": "Back to ",
+    "noAccount": "Don't have an account? ",
+    "haveAccount": "Already have an account? ",
+    "register": "Register",
+    "logInLink": "log in",
+    "errors": {
+      "invalidEmail": "That email address looks invalid.",
+      "invalidCredential": "Incorrect email or password.",
+      "emailInUse": "An account with that email already exists.",
+      "weakPassword": "Password should be at least 6 characters.",
+      "accountExistsDifferentCredential": "An account already exists with this email using a different sign-in method.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "tabs": {
+    "scan": "Scan",
+    "dashboard": "Dashboard",
+    "account": "Account",
+    "docs": "Docs"
+  },
+  "account": {
+    "title": "Account",
+    "signedIn": "Signed in",
+    "admin": "Admin",
+    "adminDescription": "You can see stats across all scans",
+    "userDescription": "Scans you take are saved to your history",
+    "signOut": "Sign out",
+    "language": "Language"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "basedOnLast100AllUsers": "Based on the last 100 scans from all users",
+    "allScansAllUsers": "All scans from all users",
+    "basedOnLast100Mine": "Based on your last 100 scans",
+    "allScansMine": "Your scans",
+    "loadError": "Could not load scans. Check your connection and try again.",
+    "totalScans": "Total scans",
+    "passed": "Passed",
+    "problems": "Problems",
+    "passRate": "{{rate}}% pass rate",
+    "recentScans": "Recent scans",
+    "noScans": "No scans yet.",
+    "noProblemsFound": "No problems found",
+    "problemDetected": "Problem detected",
+    "justNow": "Just now"
+  },
+  "manageAdmins": {
+    "title": "Manage admins",
+    "description": "{{count}} accounts. Assign or remove admin access below.",
+    "placeholder": "user@example.com",
+    "search": "Search",
+    "refresh": "Refresh",
+    "loadError": "Could not load accounts. Check your permissions and try again.",
+    "noMatches": "No accounts match this search.",
+    "noAccounts": "No account profiles found yet.",
+    "unknownEmail": "Email unavailable",
+    "notFound": "No account found with that email.",
+    "searchError": "Could not search right now. Try again.",
+    "updateError": "Could not update this user. Try again.",
+    "nowAdmin": "{{email}} is now an admin.",
+    "noLongerAdmin": "{{email}} is no longer an admin.",
+    "regularUser": "Regular user",
+    "adminRole": "Admin",
+    "cantChangeSelf": "Can't change yourself",
+    "removeAdmin": "Remove admin",
+    "makeAdmin": "Make admin"
+  },
+  "scan": {
+    "title": "Scan gloves",
+    "frameHint": "Fit the gloves inside the frame",
+    "cameraPermissionTitle": "Camera access needed",
+    "cameraPermissionDescription": "We need your permission to use the camera to scan gloves for defects.",
+    "grantPermission": "Grant permission",
+    "analyzing": "Checking gloves for defects…",
+    "noProblemsFound": "No problems found",
+    "problemDetected": "Problem detected",
+    "scanAgain": "Scan again",
+    "confidence": "{{confidence}}% confidence"
+  },
+  "detection": {
+    "tornSeam": "torn seam",
+    "holeInFingertip": "hole in fingertip",
+    "stain": "stain",
+    "missingStitching": "missing stitching",
+    "discoloration": "discoloration"
+  }
+}

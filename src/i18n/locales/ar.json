@@ -1,0 +1,106 @@
+{
+  "common": {
+    "appName": "Gloves Detector",
+    "language": "اللغة",
+    "tryAgain": "إعادة المحاولة"
+  },
+  "auth": {
+    "subtitleReset": "أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور",
+    "subtitleLogin": "سجّل الدخول لبدء فحص القفازات",
+    "subtitleRegister": "أنشئ حسابًا للبدء",
+    "emailPlaceholder": "البريد الإلكتروني",
+    "passwordPlaceholder": "كلمة المرور",
+    "sendResetLink": "إرسال رابط إعادة التعيين",
+    "logIn": "تسجيل الدخول",
+    "createAccount": "إنشاء حساب",
+    "resetSentMessage": "تحقق من بريدك الإلكتروني للحصول على رابط إعادة تعيين كلمة المرور.",
+    "or": "أو",
+    "continueWithGoogle": "المتابعة باستخدام Google",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "backTo": "العودة إلى ",
+    "noAccount": "ليس لديك حساب؟ ",
+    "haveAccount": "لديك حساب بالفعل؟ ",
+    "register": "إنشاء حساب",
+    "logInLink": "تسجيل الدخول",
+    "errors": {
+      "invalidEmail": "يبدو أن هذا البريد الإلكتروني غير صالح.",
+      "invalidCredential": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+      "emailInUse": "يوجد حساب بهذا البريد الإلكتروني بالفعل.",
+      "weakPassword": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل.",
+      "accountExistsDifferentCredential": "يوجد حساب بهذا البريد الإلكتروني باستخدام طريقة تسجيل دخول مختلفة.",
+      "generic": "حدث خطأ ما. حاول مرة أخرى."
+    }
+  },
+  "tabs": {
+    "scan": "فحص",
+    "dashboard": "لوحة التحكم",
+    "account": "الحساب",
+    "docs": "الوثائق"
+  },
+  "account": {
+    "title": "الحساب",
+    "signedIn": "مسجّل الدخول",
+    "admin": "مسؤول",
+    "adminDescription": "يمكنك رؤية إحصائيات جميع عمليات الفحص",
+    "userDescription": "يتم حفظ عمليات الفحص التي تجريها في سجلك",
+    "signOut": "تسجيل الخروج",
+    "language": "اللغة"
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "basedOnLast100AllUsers": "بناءً على آخر 100 عملية فحص من جميع المستخدمين",
+    "allScansAllUsers": "جميع عمليات الفحص من كل المستخدمين",
+    "basedOnLast100Mine": "بناءً على آخر 100 عملية فحص لك",
+    "allScansMine": "عمليات الفحص الخاصة بك",
+    "loadError": "تعذّر تحميل عمليات الفحص. تحقق من اتصالك وحاول مرة أخرى.",
+    "totalScans": "إجمالي الفحوصات",
+    "passed": "ناجحة",
+    "problems": "مشاكل",
+    "passRate": "{{rate}}% نسبة النجاح",
+    "recentScans": "عمليات الفحص الأخيرة",
+    "noScans": "لا توجد عمليات فحص بعد.",
+    "noProblemsFound": "لم يتم العثور على مشاكل",
+    "problemDetected": "تم اكتشاف مشكلة",
+    "justNow": "الآن"
+  },
+  "manageAdmins": {
+    "title": "إدارة المسؤولين",
+    "description": "{{count}} حسابات. امنح أو أزل صلاحية المسؤول أدناه.",
+    "placeholder": "user@example.com",
+    "search": "بحث",
+    "refresh": "تحديث",
+    "loadError": "تعذر تحميل الحسابات. تحقق من الصلاحيات وحاول مرة أخرى.",
+    "noMatches": "لا توجد حسابات مطابقة لهذا البحث.",
+    "noAccounts": "لم يتم العثور على ملفات حسابات بعد.",
+    "unknownEmail": "البريد الإلكتروني غير متاح",
+    "notFound": "لم يتم العثور على حساب بهذا البريد الإلكتروني.",
+    "searchError": "تعذّر البحث الآن. حاول مرة أخرى.",
+    "updateError": "تعذّر تحديث هذا المستخدم. حاول مرة أخرى.",
+    "nowAdmin": "{{email}} أصبح الآن مسؤولاً.",
+    "noLongerAdmin": "{{email}} لم يعد مسؤولاً.",
+    "regularUser": "مستخدم عادي",
+    "adminRole": "مسؤول",
+    "cantChangeSelf": "لا يمكنك تغيير حسابك",
+    "removeAdmin": "إزالة صلاحية المسؤول",
+    "makeAdmin": "منح صلاحية المسؤول"
+  },
+  "scan": {
+    "title": "فحص القفازات",
+    "frameHint": "ضع القفازات داخل الإطار",
+    "cameraPermissionTitle": "الوصول إلى الكاميرا مطلوب",
+    "cameraPermissionDescription": "نحتاج إلى إذنك لاستخدام الكاميرا لفحص القفازات بحثًا عن العيوب.",
+    "grantPermission": "منح الإذن",
+    "analyzing": "جارٍ التحقق من عيوب القفازات…",
+    "noProblemsFound": "لم يتم العثور على مشاكل",
+    "problemDetected": "تم اكتشاف مشكلة",
+    "scanAgain": "فحص مرة أخرى",
+    "confidence": "{{confidence}}% ثقة"
+  },
+  "detection": {
+    "tornSeam": "خياطة ممزقة",
+    "holeInFingertip": "ثقب في طرف الإصبع",
+    "stain": "بقعة",
+    "missingStitching": "خياطة ناقصة",
+    "discoloration": "تغير اللون"
+  }
+}
