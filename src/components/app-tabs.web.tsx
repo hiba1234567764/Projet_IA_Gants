@@ -1,4 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { Image } from 'expo-image';
 import {
   Tabs,
   TabList,
@@ -27,13 +28,13 @@ export default function AppTabs() {
       <TabList asChild>
         <CustomTabList>
           <TabTrigger name="home" href="/" asChild>
-            <TabButton>{t('tabs.scan')}</TabButton>
+            <TabButton icon="scan-outline">{t('tabs.scan')}</TabButton>
           </TabTrigger>
           <TabTrigger name="dashboard" href="/dashboard" asChild>
-            <TabButton>{t('tabs.dashboard')}</TabButton>
+            <TabButton icon="grid-outline">{t('tabs.dashboard')}</TabButton>
           </TabTrigger>
           <TabTrigger name="explore" href="/explore" asChild>
-            <TabButton>{t('tabs.account')}</TabButton>
+            <TabButton icon="person-circle-outline">{t('tabs.account')}</TabButton>
           </TabTrigger>
         </CustomTabList>
       </TabList>
@@ -41,12 +42,15 @@ export default function AppTabs() {
   );
 }
 
-export function TabButton({ children, isFocused, ...props }: TabTriggerSlotProps) {
+type TabButtonProps = TabTriggerSlotProps & { icon: 'scan-outline' | 'grid-outline' | 'person-circle-outline' };
+
+export function TabButton({ children, icon, isFocused, ...props }: TabButtonProps) {
   return (
-    <Pressable {...props} style={({ pressed }) => pressed && styles.pressed}>
+    <Pressable {...props} style={({ pressed }) => [styles.tabPressable, pressed && styles.pressed]}>
       <ThemedView
         type={isFocused ? 'backgroundSelected' : 'backgroundElement'}
-        style={styles.tabButtonView}>
+        style={[styles.tabButtonView, isFocused && styles.tabButtonFocused]}>
+        <Ionicons name={icon} size={15} color={isFocused ? '#5B5CE2' : '#64748B'} />
         <ThemedText type="small" themeColor={isFocused ? 'text' : 'textSecondary'}>
           {children}
         </ThemedText>
@@ -70,9 +74,9 @@ export function CustomTabList(props: TabListProps) {
     <View {...props} style={[styles.tabListContainer, isCompact && styles.tabListContainerCompact, { flexDirection: rowDirection }]}>
       <ThemedView type="backgroundElement" style={[styles.innerContainer, isCompact && styles.innerContainerCompact, { flexDirection: rowDirection }]}>
         {!isCompact && (
-          <ThemedText type="smallBold" style={isRTL ? styles.brandTextRTL : styles.brandText}>
-            {t('common.appName')}
-          </ThemedText>
+          <ThemedView style={isRTL ? styles.brandTextRTL : styles.brandText}>
+            <Image source={require('../../assets/images/pip-logo.png')} style={styles.navLogo} contentFit="contain" />
+          </ThemedView>
         )}
 
         {props.children}
@@ -111,6 +115,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     gap: Spacing.two,
     maxWidth: MaxContentWidth,
+    boxShadow: '0 10px 25px -16px rgba(30,41,59,0.55)',
   },
   innerContainerCompact: {
     width: '100%',
@@ -124,12 +129,25 @@ const styles = StyleSheet.create({
   brandTextRTL: {
     marginLeft: 'auto',
   },
+  navLogo: {
+    width: 48,
+    height: 22,
+  },
   pressed: {
     opacity: 0.7,
   },
   tabButtonView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
     paddingVertical: Spacing.one,
     paddingHorizontal: Spacing.three,
+    borderRadius: Spacing.three,
+  },
+  tabButtonFocused: {
+    backgroundColor: '#E9E7FF',
+  },
+  tabPressable: {
     borderRadius: Spacing.three,
   },
   externalPressable: {

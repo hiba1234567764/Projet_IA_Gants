@@ -89,7 +89,11 @@ export function DashboardScreen() {
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}>
       <ThemedView style={styles.container}>
         <ThemedView style={styles.titleContainer}>
-          <ThemedText type="subtitle">{t('dashboard.title')}</ThemedText>
+          <ThemedView style={styles.eyebrow}>
+            <Ionicons name={isAdmin ? 'shield-checkmark' : 'sparkles'} size={14} color="#5B5CE2" />
+            <ThemedText type="smallBold" style={styles.eyebrowText}>{isAdmin ? 'ADMIN OVERVIEW' : 'QUALITY OVERVIEW'}</ThemedText>
+          </ThemedView>
+          <ThemedText type="subtitle" style={styles.dashboardTitle}>{t('dashboard.title')}</ThemedText>
           <ThemedText type="small" themeColor="textSecondary">
             {isAdmin
               ? total >= 100
@@ -124,8 +128,8 @@ export function DashboardScreen() {
         {scans !== null && (
           <>
             <ThemedView style={styles.statsRow}>
-              <ThemedView type="backgroundElement" style={styles.statTile}>
-                <Ionicons name="camera-outline" size={18} color={theme.textSecondary} />
+              <ThemedView type="backgroundElement" style={[styles.statTile, styles.totalTile]}>
+                <ThemedView style={[styles.statIcon, styles.totalIcon]}><Ionicons name="camera-outline" size={18} color="#5B5CE2" /></ThemedView>
                 <ThemedText type="title" style={styles.statNumber}>
                   {total}
                 </ThemedText>
@@ -133,8 +137,8 @@ export function DashboardScreen() {
                   {t('dashboard.totalScans')}
                 </ThemedText>
               </ThemedView>
-              <ThemedView type="backgroundElement" style={styles.statTile}>
-                <Ionicons name="checkmark-circle-outline" size={18} color="#1f9d55" />
+              <ThemedView type="backgroundElement" style={[styles.statTile, styles.passTile]}>
+                <ThemedView style={[styles.statIcon, styles.passIcon]}><Ionicons name="checkmark-circle-outline" size={18} color="#159B6B" /></ThemedView>
                 <ThemedText type="title" style={[styles.statNumber, styles.okText]}>
                   {passed}
                 </ThemedText>
@@ -142,8 +146,8 @@ export function DashboardScreen() {
                   {t('dashboard.passed')}
                 </ThemedText>
               </ThemedView>
-              <ThemedView type="backgroundElement" style={styles.statTile}>
-                <Ionicons name="warning-outline" size={18} color="#e0393e" />
+              <ThemedView type="backgroundElement" style={[styles.statTile, styles.problemTile]}>
+                <ThemedView style={[styles.statIcon, styles.problemIcon]}><Ionicons name="warning-outline" size={18} color="#E6516B" /></ThemedView>
                 <ThemedText type="title" style={[styles.statNumber, styles.problemText]}>
                   {problems}
                 </ThemedText>
@@ -225,6 +229,9 @@ const styles = StyleSheet.create({
     paddingTop: Spacing.four,
     paddingBottom: Spacing.three,
   },
+  eyebrow: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: 'transparent' },
+  eyebrowText: { color: '#5B5CE2', fontSize: 11, letterSpacing: 1.1 },
+  dashboardTitle: { fontSize: 30, lineHeight: 38 },
   loadingRow: {
     paddingVertical: Spacing.six,
     alignItems: 'center',
@@ -242,7 +249,16 @@ const styles = StyleSheet.create({
     padding: Spacing.three,
     alignItems: 'center',
     gap: Spacing.half,
+    borderWidth: 1,
+    boxShadow: '0 10px 18px -16px rgba(30,41,59,0.6)',
   },
+  statIcon: { width: 34, height: 34, borderRadius: 12, alignItems: 'center', justifyContent: 'center', marginBottom: 2 },
+  totalTile: { borderColor: '#DDD6FE' },
+  passTile: { borderColor: '#B7E8D5' },
+  problemTile: { borderColor: '#FBC6D0' },
+  totalIcon: { backgroundColor: '#EDE9FE' },
+  passIcon: { backgroundColor: '#DDF7EC' },
+  problemIcon: { backgroundColor: '#FFE8ED' },
   statNumber: {
     fontSize: 28,
     lineHeight: 32,
@@ -252,7 +268,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: Spacing.one,
     paddingTop: Spacing.two,
-    backgroundColor: 'transparent',
+    backgroundColor: '#EEF6FF',
+    marginHorizontal: Spacing.four,
+    borderRadius: Spacing.three,
+    paddingVertical: Spacing.two,
   },
   okText: {
     color: '#1f9d55',

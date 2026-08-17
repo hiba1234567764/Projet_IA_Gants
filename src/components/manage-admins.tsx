@@ -235,6 +235,9 @@ const styles = StyleSheet.create({
     borderRadius: Spacing.four,
     padding: Spacing.four,
     gap: Spacing.three,
+    borderWidth: 1,
+    borderColor: '#C7D2FE',
+    boxShadow: '0 12px 22px -18px rgba(30,41,59,0.55)',
   },
   header: {
     alignItems: 'center',
@@ -247,7 +250,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#3c87f71a',
+    backgroundColor: '#EDE9FE',
   },
   headerCopy: {
     flex: 1,
@@ -307,7 +310,7 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 19,
-    backgroundColor: '#3c87f7',
+    backgroundColor: '#5B5CE2',
     alignItems: 'center',
     justifyContent: 'center',
   },

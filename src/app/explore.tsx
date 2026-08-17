@@ -61,6 +61,10 @@ export default function TabTwoScreen() {
       contentContainerStyle={[styles.contentContainer, contentPlatformStyle]}>
       <ThemedView style={styles.container}>
         <ThemedView style={styles.titleContainer}>
+          <ThemedView style={styles.eyebrow}>
+            <Ionicons name="person-circle-outline" size={14} color="#5B5CE2" />
+            <ThemedText type="smallBold" style={styles.eyebrowText}>MY WORKSPACE</ThemedText>
+          </ThemedView>
           <ThemedText type="subtitle">{t('account.title')}</ThemedText>
         </ThemedView>
 
@@ -139,11 +143,12 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   titleContainer: {
-    gap: Spacing.three,
-    alignItems: 'center',
+    gap: Spacing.one,
     paddingHorizontal: Spacing.four,
     paddingVertical: Spacing.six,
   },
+  eyebrow: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: 'transparent' },
+  eyebrowText: { color: '#5B5CE2', fontSize: 11, letterSpacing: 1.1 },
   sectionsWrapper: {
     gap: Spacing.three,
     paddingHorizontal: Spacing.four,
@@ -155,12 +160,15 @@ const styles = StyleSheet.create({
     gap: Spacing.three,
     borderRadius: Spacing.four,
     padding: Spacing.four,
+    borderWidth: 1,
+    borderColor: '#DDD6FE',
+    boxShadow: '0 12px 22px -18px rgba(30,41,59,0.55)',
   },
   avatar: {
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#3c87f7',
+    backgroundColor: '#5B5CE2',
     alignItems: 'center',
     justifyContent: 'center',
   },

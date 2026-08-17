@@ -1,5 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { Image } from 'expo-image';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -13,7 +14,6 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AnimatedIcon } from '@/components/animated-icon';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedTextInput } from '@/components/themed-text-input';
@@ -89,7 +89,9 @@ export function AuthScreen() {
           </View>
 
           <ThemedView style={[styles.header, isWideScreen && { flexDirection: rowDirection, gap: Spacing.four }]}>
-            <AnimatedIcon />
+            <ThemedView style={styles.brandMark}>
+              <Image source={require('../../assets/images/pip-logo.png')} style={styles.pipLogo} contentFit="contain" />
+            </ThemedView>
             <ThemedView style={isWideScreen && styles.headerTextWide}>
               <ThemedText
                 type="title"
@@ -255,6 +257,17 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     gap: Spacing.two,
+  },
+  brandMark: {
+    width: 196,
+    height: 82,
+    borderRadius: Spacing.three,
+    overflow: 'hidden',
+    backgroundColor: '#FFFFFF',
+  },
+  pipLogo: {
+    width: '100%',
+    height: '100%',
   },
   headerTextWide: {
     flex: 1,

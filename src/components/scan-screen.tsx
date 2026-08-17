@@ -63,7 +63,7 @@ export function ScanScreen() {
       <ThemedView style={styles.container}>
         <SafeAreaView style={styles.permissionSafeArea}>
           <ThemedView type="backgroundElement" style={styles.permissionIconBadge}>
-            <Ionicons name="camera" color={theme.text} size={32} />
+            <Ionicons name="camera" color="#5B5CE2" size={32} />
           </ThemedView>
           <ThemedText type="subtitle" style={styles.centerText}>
             {t('scan.cameraPermissionTitle')}
@@ -72,9 +72,9 @@ export function ScanScreen() {
             {t('scan.cameraPermissionDescription')}
           </ThemedText>
           <Pressable
-            style={[styles.primaryButton, { backgroundColor: theme.text }]}
+            style={styles.primaryButton}
             onPress={requestPermission}>
-            <ThemedText style={{ color: theme.background }} type="smallBold">
+              <ThemedText style={styles.primaryButtonText} type="smallBold">
               {t('scan.grantPermission')}
             </ThemedText>
           </Pressable>
@@ -89,7 +89,7 @@ export function ScanScreen() {
         <CameraView ref={cameraRef} style={styles.camera} facing="back" />
         <SafeAreaView style={styles.cameraOverlay} pointerEvents="box-none">
           <ThemedView type="backgroundElement" style={[styles.titlePill, { flexDirection: rowDirection }]}>
-            <Ionicons name="camera-outline" size={16} color={theme.text} />
+            <Ionicons name="scan-outline" size={16} color="#5B5CE2" />
             <ThemedText type="smallBold">{t('scan.title')}</ThemedText>
           </ThemedView>
 
@@ -145,9 +145,9 @@ export function ScanScreen() {
 
         {state === 'result' && (
           <Pressable
-            style={[styles.primaryButton, { backgroundColor: theme.text }]}
+            style={styles.primaryButton}
             onPress={handleRetake}>
-            <ThemedText style={{ color: theme.background }} type="smallBold">
+            <ThemedText style={styles.primaryButtonText} type="smallBold">
               {t('scan.scanAgain')}
             </ThemedText>
           </Pressable>
@@ -176,6 +176,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.four,
     paddingVertical: Spacing.two,
     borderRadius: Spacing.five,
+    boxShadow: '0 8px 18px -12px rgba(15,23,42,0.45)',
   },
   frameGuide: {
     flex: 1,
@@ -228,6 +229,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: Spacing.two,
+    backgroundColor: '#EDE9FE',
   },
   centerText: {
     textAlign: 'center',
@@ -258,6 +260,8 @@ const styles = StyleSheet.create({
     borderRadius: Spacing.four,
     padding: Spacing.four,
     gap: Spacing.two,
+    borderWidth: 1,
+    borderColor: '#DDD6FE',
   },
   resultHeaderRow: {
     flexDirection: 'row',
@@ -275,5 +279,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.five,
     paddingVertical: Spacing.three,
     borderRadius: Spacing.five,
+    backgroundColor: '#5B5CE2',
+    boxShadow: '0 12px 22px -14px rgba(91,92,226,0.9)',
   },
+  primaryButtonText: { color: '#FFFFFF' },
 });
