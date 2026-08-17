@@ -82,7 +82,12 @@
     "adminRole": "Admin",
     "cantChangeSelf": "Vous ne pouvez pas vous modifier",
     "removeAdmin": "Retirer l'admin",
-    "makeAdmin": "Rendre admin"
+    "makeAdmin": "Rendre admin",
+    "deleteAccount": "Supprimer le compte",
+    "deleteConfirm": "Supprimer définitivement {{email}} et tous ses scans ?",
+    "deleteError": "Impossible de supprimer ce compte. Réessayez.",
+    "deleted": "{{email}} a été supprimé.",
+    "cancel": "Annuler"
   },
   "scan": {
     "title": "Scanner les gants",

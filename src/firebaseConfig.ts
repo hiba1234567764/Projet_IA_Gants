@@ -6,6 +6,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { initializeApp } from 'firebase/app';
 import { initializeAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import { getFunctions } from 'firebase/functions';
+import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBoIQhenDm0P7k2RJ79Bh8VkbYrp8X39Zc',
@@ -23,3 +25,5 @@ export const auth = initializeAuth(app, {
 // The Firestore database in this Firebase project was created with the ID "gloves"
 // instead of the default "(default)", so it must be named explicitly here.
 export const db = getFirestore(app, 'gloves');
+export const functions = getFunctions(app);
+export const storage = getStorage(app);

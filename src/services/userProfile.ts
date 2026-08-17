@@ -1,6 +1,7 @@
 import { collection, doc, getDoc, getDocs, limit, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
+import { httpsCallable } from 'firebase/functions';
 
-import { db } from '@/firebaseConfig';
+import { db, functions } from '@/firebaseConfig';
 
 export type UserRole = 'user' | 'admin';
 
@@ -62,4 +63,8 @@ export async function getAllUserProfiles(): Promise<UserProfile[]> {
 
 export async function setUserRole(uid: string, role: UserRole): Promise<void> {
   await updateDoc(doc(db, 'users', uid), { role });
+}
+
+export async function deleteUserAccount(uid: string): Promise<void> {
+  await httpsCallable<{ uid: string }, void>(functions, 'deleteUserAccount')({ uid });
 }

@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Pressable, StyleSheet } from 'react-native';
+import { ActivityIndicator, Alert, Platform, Pressable, StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedTextInput } from '@/components/themed-text-input';
@@ -10,9 +10,11 @@ import { Spacing } from '@/constants/theme';
 import { auth } from '@/firebaseConfig';
 import { useIsRTL } from '@/hooks/use-is-rtl';
 import { useTheme } from '@/hooks/use-theme';
-import { getAllUserProfiles, setUserRole, type UserProfile } from '@/services/userProfile';
+import { deleteUserAccount, getAllUserProfiles, setUserRole, type UserProfile } from '@/services/userProfile';
 
-type MessageState = { type: 'loadError' | 'updateError' } | { type: 'nowAdmin' | 'noLongerAdmin'; email: string };
+type MessageState =
+  | { type: 'loadError' | 'updateError' | 'deleteError' }
+  | { type: 'nowAdmin' | 'noLongerAdmin' | 'deleted'; email: string };
 
 export function ManageAdmins() {
   const theme = useTheme();
@@ -36,10 +38,14 @@ export function ManageAdmins() {
         return t('manageAdmins.loadError');
       case 'updateError':
         return t('manageAdmins.updateError');
+      case 'deleteError':
+        return t('manageAdmins.deleteError');
       case 'nowAdmin':
         return t('manageAdmins.nowAdmin', { email: state.email });
       case 'noLongerAdmin':
         return t('manageAdmins.noLongerAdmin', { email: state.email });
+      case 'deleted':
+        return t('manageAdmins.deleted', { email: state.email });
     }
   }
 
@@ -48,7 +54,8 @@ export function ManageAdmins() {
     setMessage(null);
     try {
       setUsers(await getAllUserProfiles());
-    } catch {
+    } catch (error) {
+      console.error('Failed to load user profiles:', error);
       setMessage({ type: 'loadError' });
     } finally {
       setLoading(false);
@@ -68,19 +75,56 @@ export function ManageAdmins() {
       await setUserRole(user.uid, nextRole);
       setUsers((current) => current.map((item) => (item.uid === user.uid ? { ...item, role: nextRole } : item)));
       setMessage({ type: nextRole === 'admin' ? 'nowAdmin' : 'noLongerAdmin', email: user.email });
-    } catch {
+    } catch (error) {
+      console.error(`Failed to update role for user ${user.uid}:`, error);
       setMessage({ type: 'updateError' });
     } finally {
       setUpdatingUid(null);
     }
   }
 
+  function confirmDelete(user: UserProfile) {
+    const remove = async () => {
+      setUpdatingUid(user.uid);
+      setMessage(null);
+      try {
+        await deleteUserAccount(user.uid);
+        setUsers((current) => current.filter((item) => item.uid !== user.uid));
+        setMessage({ type: 'deleted', email: user.email });
+      } catch (error) {
+        console.error(`Failed to delete account ${user.uid}:`, error);
+        setMessage({ type: 'deleteError' });
+      } finally {
+        setUpdatingUid(null);
+      }
+    };
+
+    if (Platform.OS === 'web') {
+      if (window.confirm(t('manageAdmins.deleteConfirm', { email: user.email }))) void remove();
+      return;
+    }
+    Alert.alert(t('manageAdmins.deleteAccount'), t('manageAdmins.deleteConfirm', { email: user.email }), [
+      { text: t('manageAdmins.cancel'), style: 'cancel' },
+      { text: t('manageAdmins.deleteAccount'), style: 'destructive', onPress: remove },
+    ]);
+  }
+
   return (
     <ThemedView type="backgroundElement" style={styles.card}>
-      <ThemedText type="smallBold">{t('manageAdmins.title')}</ThemedText>
-      <ThemedText type="small" themeColor="textSecondary">
-        {t('manageAdmins.description', { count: users.length })}
-      </ThemedText>
+      <ThemedView style={[styles.header, { flexDirection: rowDirection }]}>
+        <ThemedView style={styles.headerIcon}>
+          <Ionicons name="people" size={20} color="#3c87f7" />
+        </ThemedView>
+        <ThemedView style={styles.headerCopy}>
+          <ThemedText type="smallBold">{t('manageAdmins.title')}</ThemedText>
+          <ThemedText type="small" themeColor="textSecondary">
+            {t('manageAdmins.description', { count: users.length })}
+          </ThemedText>
+        </ThemedView>
+        <ThemedView type="backgroundSelected" style={styles.countBadge}>
+          <ThemedText type="smallBold">{users.length}</ThemedText>
+        </ThemedView>
+      </ThemedView>
 
       <ThemedView style={[styles.searchRow, { flexDirection: rowDirection }]}>
         <ThemedView type="backgroundSelected" style={[styles.searchInputRow, { flexDirection: rowDirection }]}>
@@ -97,22 +141,31 @@ export function ManageAdmins() {
         </ThemedView>
         <Pressable
           disabled={loading}
-          style={[styles.searchButton, { backgroundColor: theme.text, opacity: loading ? 0.5 : 1 }]}
+          accessibilityLabel={t('manageAdmins.refresh')}
+          style={({ pressed }) => [styles.searchButton, { backgroundColor: theme.text, opacity: loading ? 0.5 : pressed ? 0.75 : 1 }]}
           onPress={loadUsers}>
           {loading ? (
             <ActivityIndicator color={theme.background} />
           ) : (
-            <ThemedText style={{ color: theme.background }} type="smallBold">
-              {t('manageAdmins.refresh')}
-            </ThemedText>
+            <Ionicons name="refresh" size={19} color={theme.background} />
           )}
         </Pressable>
       </ThemedView>
 
       {message && (
-        <ThemedText type="small" themeColor="textSecondary">
-          {messageText(message)}
-        </ThemedText>
+        <ThemedView
+          style={[
+            styles.message,
+            { flexDirection: rowDirection },
+            ['loadError', 'updateError', 'deleteError'].includes(message.type) ? styles.errorMessage : styles.successMessage,
+          ]}>
+          <Ionicons
+            name={['loadError', 'updateError', 'deleteError'].includes(message.type) ? 'alert-circle' : 'checkmark-circle'}
+            size={17}
+            color={['loadError', 'updateError', 'deleteError'].includes(message.type) ? '#e0393e' : '#1f9d55'}
+          />
+          <ThemedText type="small" style={styles.messageText}>{messageText(message)}</ThemedText>
+        </ThemedView>
       )}
 
       {!loading && visibleUsers.length === 0 && (
@@ -125,33 +178,51 @@ export function ManageAdmins() {
         const isSelf = user.uid === auth.currentUser?.uid;
         const updating = updatingUid === user.uid;
         return (
-          <ThemedView key={user.uid} type="backgroundSelected" style={[styles.resultRow, { flexDirection: rowDirection }]}>
+          <ThemedView key={user.uid} type="backgroundSelected" style={styles.resultRow}>
             <ThemedView style={[styles.resultInfo, { flexDirection: rowDirection, alignItems: 'center' }]}>
-              <Ionicons name="person-circle-outline" size={22} color={theme.textSecondary} />
-              <ThemedView style={styles.resultTextColumn}>
-                <ThemedText type="small">{user.email || t('manageAdmins.unknownEmail')}</ThemedText>
-                <ThemedText type="small" themeColor="textSecondary">
-                  {user.role === 'admin' ? t('manageAdmins.adminRole') : t('manageAdmins.regularUser')}
+              <ThemedView style={styles.avatar}>
+                <ThemedText type="smallBold" style={styles.avatarText}>
+                  {(user.email || '?').charAt(0).toUpperCase()}
                 </ThemedText>
+              </ThemedView>
+              <ThemedView style={styles.resultTextColumn}>
+                <ThemedText type="smallBold" numberOfLines={1}>{user.email || t('manageAdmins.unknownEmail')}</ThemedText>
+                <ThemedView style={[styles.roleLine, { flexDirection: rowDirection }]}>
+                  <Ionicons name={user.role === 'admin' ? 'shield-checkmark' : 'person-outline'} size={13} color={user.role === 'admin' ? '#3c87f7' : theme.textSecondary} />
+                  <ThemedText type="small" themeColor="textSecondary">
+                    {user.role === 'admin' ? t('manageAdmins.adminRole') : t('manageAdmins.regularUser')}
+                  </ThemedText>
+                </ThemedView>
               </ThemedView>
             </ThemedView>
 
-            <Pressable
-              disabled={updating || isSelf}
-              style={[styles.toggleButton, { opacity: updating || isSelf ? 0.5 : 1 }]}
-              onPress={() => handleToggleRole(user)}>
-              {updating ? (
-                <ActivityIndicator color={theme.text} />
-              ) : (
-                <ThemedText type="smallBold" style={user.role === 'admin' ? styles.removeText : styles.grantText}>
-                  {isSelf
-                    ? t('manageAdmins.cantChangeSelf')
-                    : user.role === 'admin'
-                      ? t('manageAdmins.removeAdmin')
-                      : t('manageAdmins.makeAdmin')}
-                </ThemedText>
+            <ThemedView style={[styles.actions, { flexDirection: rowDirection }]}>
+              {updating ? <ActivityIndicator color={theme.text} /> : (
+                <>
+                  <Pressable
+                    disabled={isSelf}
+                    style={({ pressed }) => [styles.actionButton, styles.roleButton, { opacity: isSelf ? 0.45 : pressed ? 0.7 : 1 }]}
+                    onPress={() => handleToggleRole(user)}>
+                    <Ionicons name={user.role === 'admin' ? 'shield-outline' : 'shield-checkmark-outline'} size={16} color={user.role === 'admin' ? '#e09b3e' : '#1f9d55'} />
+                    <ThemedText type="smallBold" style={user.role === 'admin' ? styles.demoteText : styles.grantText}>
+                      {isSelf
+                        ? t('manageAdmins.cantChangeSelf')
+                        : user.role === 'admin'
+                          ? t('manageAdmins.removeAdmin')
+                          : t('manageAdmins.makeAdmin')}
+                    </ThemedText>
+                  </Pressable>
+                  {!isSelf && (
+                    <Pressable style={({ pressed }) => [styles.actionButton, styles.deleteButton, pressed && styles.pressed]} onPress={() => confirmDelete(user)}>
+                      <Ionicons name="trash-outline" size={16} color="#e0393e" />
+                      <ThemedText type="smallBold" style={styles.removeText}>
+                        {t('manageAdmins.deleteAccount')}
+                      </ThemedText>
+                    </Pressable>
+                  )}
+                </>
               )}
-            </Pressable>
+            </ThemedView>
           </ThemedView>
         );
       })}
@@ -163,7 +234,33 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: Spacing.four,
     padding: Spacing.four,
-    gap: Spacing.two,
+    gap: Spacing.three,
+  },
+  header: {
+    alignItems: 'center',
+    gap: Spacing.three,
+    backgroundColor: 'transparent',
+  },
+  headerIcon: {
+    width: 42,
+    height: 42,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#3c87f71a',
+  },
+  headerCopy: {
+    flex: 1,
+    gap: Spacing.half,
+    backgroundColor: 'transparent',
+  },
+  countBadge: {
+    minWidth: 34,
+    height: 30,
+    paddingHorizontal: Spacing.two,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   searchRow: {
     flexDirection: 'row',
@@ -177,6 +274,7 @@ const styles = StyleSheet.create({
     gap: Spacing.two,
     borderRadius: Spacing.three,
     paddingHorizontal: Spacing.three,
+    minHeight: 46,
   },
   searchInput: {
     flex: 1,
@@ -184,15 +282,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   searchButton: {
-    paddingHorizontal: Spacing.four,
+    width: 46,
+    height: 46,
     borderRadius: Spacing.three,
     alignItems: 'center',
     justifyContent: 'center',
   },
   resultRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.two,
+    gap: Spacing.three,
     borderRadius: Spacing.three,
     padding: Spacing.three,
   },
@@ -206,14 +303,68 @@ const styles = StyleSheet.create({
     gap: Spacing.half,
     backgroundColor: 'transparent',
   },
-  toggleButton: {
+  avatar: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: '#3c87f7',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarText: {
+    color: '#ffffff',
+  },
+  roleLine: {
+    alignItems: 'center',
+    gap: Spacing.one,
+    backgroundColor: 'transparent',
+  },
+  actionButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.two,
+    paddingHorizontal: Spacing.three,
+    minHeight: 42,
+    borderRadius: Spacing.three,
+    justifyContent: 'center',
+  },
+  actions: {
+    width: '100%',
+    gap: Spacing.two,
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+  roleButton: {
+    backgroundColor: '#1f9d5514',
+  },
+  deleteButton: {
+    backgroundColor: '#e0393e14',
+  },
+  pressed: {
+    opacity: 0.7,
+  },
+  message: {
+    alignItems: 'center',
+    gap: Spacing.two,
     paddingHorizontal: Spacing.three,
     paddingVertical: Spacing.two,
-    minHeight: 44,
-    justifyContent: 'center',
+    borderRadius: Spacing.three,
+  },
+  messageText: {
+    flex: 1,
+  },
+  errorMessage: {
+    backgroundColor: '#e0393e14',
+  },
+  successMessage: {
+    backgroundColor: '#1f9d5514',
   },
   grantText: {
     color: '#1f9d55',
+  },
+  demoteText: {
+    color: '#e09b3e',
   },
   removeText: {
     color: '#e0393e',

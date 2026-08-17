@@ -1,6 +1,7 @@
 import { addDoc, collection, getDocs, limit, orderBy, query, serverTimestamp, Timestamp, where } from 'firebase/firestore';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
-import { db } from '@/firebaseConfig';
+import { db, storage } from '@/firebaseConfig';
 import type { DetectionResult, Defect } from '@/services/detection';
 
 export type ScanRecord = {
@@ -8,13 +9,33 @@ export type ScanRecord = {
   ok: boolean;
   defects: Defect[];
   createdAt: Date | null;
+  photoUrl: string | null;
 };
 
-export async function saveScanResult(result: DetectionResult, uid: string): Promise<void> {
+async function uploadScanPhoto(photoUri: string, uid: string): Promise<string> {
+  const response = await fetch(photoUri);
+  const photo = await response.blob();
+  const photoRef = ref(storage, `scans/${uid}/${Date.now()}-${Math.random().toString(36).slice(2)}.jpg`);
+
+  await uploadBytes(photoRef, photo, { contentType: 'image/jpeg' });
+  return getDownloadURL(photoRef);
+}
+
+export async function saveScanResult(result: DetectionResult, uid: string, photoUri: string): Promise<void> {
+  // Keep the detection in history even if an image upload is temporarily unavailable.
+  // Older and failed uploads are rendered without a thumbnail in the dashboard.
+  let photoUrl: string | null = null;
+  try {
+    photoUrl = await uploadScanPhoto(photoUri, uid);
+  } catch (error) {
+    console.warn('Failed to upload scan photo:', error);
+  }
+
   await addDoc(collection(db, 'scans'), {
     uid,
     ok: result.ok,
     defects: result.defects,
+    photoUrl,
     createdAt: serverTimestamp(),
   });
 }
@@ -36,6 +57,7 @@ export async function fetchRecentScans(uid?: string): Promise<ScanRecord[]> {
       ok: Boolean(data.ok),
       defects: Array.isArray(data.defects) ? data.defects : [],
       createdAt,
+      photoUrl: typeof data.photoUrl === 'string' ? data.photoUrl : null,
     };
   });
 }

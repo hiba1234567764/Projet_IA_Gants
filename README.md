@@ -16,6 +16,19 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npx expo start
    ```
 
+### Deploy Firestore security rules
+
+This app uses the named Firestore database `gloves`. Deploy its security rules
+before using account role management:
+
+```bash
+npx firebase-tools deploy --only firestore:rules
+```
+
+The first administrator must be bootstrapped manually in the Firebase console by
+setting `users/{uid}.role` to `admin`. After that, administrators can manage roles
+from the Account screen.
+
 In the output, you'll find options to open the app in a
 
 - [development build](https://docs.expo.dev/develop/development-builds/introduction/)

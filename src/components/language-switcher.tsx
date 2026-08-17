@@ -39,7 +39,7 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
         onPress={() => setOpen(true)}>
         <ThemedView
           type="backgroundElement"
-          style={[styles.trigger, { flexDirection: isRTL ? 'row-reverse' : 'row' }]}>
+          style={[styles.trigger, compact && styles.compactTrigger, { flexDirection: isRTL ? 'row-reverse' : 'row' }]}>
           <Ionicons name="globe-outline" size={16} color={theme.text} />
           {!compact && <ThemedText type="small">{current.flag} {current.name}</ThemedText>}
         </ThemedView>
@@ -86,6 +86,11 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.two,
     borderRadius: Spacing.five,
     minHeight: 36,
+  },
+  compactTrigger: {
+    width: 36,
+    paddingHorizontal: 0,
+    justifyContent: 'center',
   },
   pressed: {
     opacity: 0.7,

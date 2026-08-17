@@ -82,7 +82,12 @@
     "adminRole": "Admin",
     "cantChangeSelf": "Can't change yourself",
     "removeAdmin": "Remove admin",
-    "makeAdmin": "Make admin"
+    "makeAdmin": "Make admin",
+    "deleteAccount": "Delete account",
+    "deleteConfirm": "Permanently delete {{email}} and all of their scans?",
+    "deleteError": "Could not delete this account. Try again.",
+    "deleted": "{{email}} was deleted.",
+    "cancel": "Cancel"
   },
   "scan": {
     "title": "Scan gloves",

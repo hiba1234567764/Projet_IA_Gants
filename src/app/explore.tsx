@@ -73,7 +73,9 @@ export default function TabTwoScreen() {
             </ThemedView>
             <ThemedView style={styles.accountInfo}>
               <ThemedView style={[styles.nameRow, { flexDirection: rowDirection }]}>
-                <ThemedText type="smallBold">{email || t('account.signedIn')}</ThemedText>
+                <ThemedText type="smallBold" numberOfLines={1} style={styles.email}>
+                  {email || t('account.signedIn')}
+                </ThemedText>
                 {role === 'admin' && (
                   <ThemedView type="backgroundSelected" style={[styles.roleBadge, { flexDirection: rowDirection }]}>
                     <Ionicons name="shield-checkmark" size={12} color={theme.text} />
@@ -133,6 +135,7 @@ const styles = StyleSheet.create({
   },
   container: {
     maxWidth: MaxContentWidth,
+    width: '100%',
     flexGrow: 1,
   },
   titleContainer: {
@@ -170,6 +173,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: Spacing.two,
     backgroundColor: 'transparent',
+  },
+  email: {
+    flexShrink: 1,
   },
   roleBadge: {
     alignItems: 'center',

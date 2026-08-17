@@ -1,7 +1,7 @@
 import { useIdTokenAuthRequest } from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
 import { GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { auth } from '@/firebaseConfig';
 import { ensureUserProfile } from '@/services/auth';
@@ -11,6 +11,8 @@ WebBrowser.maybeCompleteAuthSession();
 
 export function useGoogleSignIn(onError: (error: unknown) => void) {
   const [signingIn, setSigningIn] = useState(false);
+  const onErrorRef = useRef(onError);
+  onErrorRef.current = onError;
   const [request, response, promptAsync] = useIdTokenAuthRequest({
     clientId: GOOGLE_WEB_CLIENT_ID,
   });
@@ -23,10 +25,10 @@ export function useGoogleSignIn(onError: (error: unknown) => void) {
       const credential = GoogleAuthProvider.credential(response.params.id_token);
       signInWithCredential(auth, credential)
         .then(ensureUserProfile)
-        .catch(onError)
+        .catch((error) => onErrorRef.current(error))
         .finally(() => setSigningIn(false));
     } else if (response.type === 'error') {
-      onError(response.error);
+      onErrorRef.current(response.error);
     }
     // 'dismiss' and 'cancel' mean the user closed the picker themselves — not an error.
   }, [response]);

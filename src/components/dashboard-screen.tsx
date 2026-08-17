@@ -1,4 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { Image } from 'expo-image';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Platform, Pressable, RefreshControl, ScrollView, StyleSheet } from 'react-native';
@@ -170,6 +171,14 @@ export function DashboardScreen() {
               ) : (
                 scans.map((scan) => (
                   <ThemedView key={scan.id} type="backgroundElement" style={[styles.scanRow, { flexDirection: rowDirection }]}>
+                    {scan.photoUrl && (
+                      <Image
+                        source={{ uri: scan.photoUrl }}
+                        style={styles.scanPhoto}
+                        contentFit="cover"
+                        accessibilityLabel={t('dashboard.recentScans')}
+                      />
+                    )}
                     <Ionicons
                       name={scan.ok ? 'checkmark-circle' : 'warning'}
                       color={scan.ok ? '#1f9d55' : '#e0393e'}
@@ -276,5 +285,11 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: Spacing.half,
     backgroundColor: 'transparent',
+  },
+  scanPhoto: {
+    width: 64,
+    height: 64,
+    borderRadius: Spacing.two,
+    backgroundColor: '#2E3135',
   },
 });

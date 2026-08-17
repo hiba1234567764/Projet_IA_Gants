@@ -42,7 +42,7 @@ export function ScanScreen() {
 
     const uid = auth.currentUser?.uid;
     if (uid) {
-      saveScanResult(detection, uid).catch((error) => {
+      saveScanResult(detection, uid, photo.uri).catch((error) => {
         console.warn('Failed to save scan to history:', error);
       });
     }

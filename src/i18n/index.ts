@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Localization from 'expo-localization';
-import i18n from 'i18next';
+import { createInstance } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 import ar from './locales/ar.json';
@@ -12,6 +12,7 @@ export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 export const RTL_LANGUAGES: readonly SupportedLanguage[] = ['ar'];
 
 const LANGUAGE_STORAGE_KEY = 'app-language';
+const i18n = createInstance();
 
 function isSupportedLanguage(value: string | undefined): value is SupportedLanguage {
   return !!value && (SUPPORTED_LANGUAGES as readonly string[]).includes(value);

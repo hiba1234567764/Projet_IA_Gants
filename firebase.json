@@ -1,0 +1,14 @@
+{
+  "functions": {
+    "source": "functions"
+  },
+  "firestore": [
+    {
+      "database": "gloves",
+      "rules": "firestore.rules"
+    }
+  ],
+  "storage": {
+    "rules": "storage.rules"
+  }
+}

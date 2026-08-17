@@ -82,7 +82,12 @@
     "adminRole": "مسؤول",
     "cantChangeSelf": "لا يمكنك تغيير حسابك",
     "removeAdmin": "إزالة صلاحية المسؤول",
-    "makeAdmin": "منح صلاحية المسؤول"
+    "makeAdmin": "منح صلاحية المسؤول",
+    "deleteAccount": "حذف الحساب",
+    "deleteConfirm": "هل تريد حذف {{email}} وجميع عمليات الفحص نهائيًا؟",
+    "deleteError": "تعذر حذف هذا الحساب. حاول مرة أخرى.",
+    "deleted": "تم حذف {{email}}.",
+    "cancel": "إلغاء"
   },
   "scan": {
     "title": "فحص القفازات",

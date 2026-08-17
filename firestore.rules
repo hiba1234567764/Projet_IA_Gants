@@ -1,0 +1,43 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    match /users/{userId} {
+      // Users can read their own profile. Admins need collection access to
+      // display accounts in the role-management screen.
+      allow get: if signedIn() && (request.auth.uid == userId || isAdmin());
+      allow list: if isAdmin();
+
+      // New profiles always start as regular users. This prevents a client
+      // from granting itself admin access during registration.
+      allow create: if signedIn()
+        && request.auth.uid == userId
+        && request.resource.data.role == 'user';
+
+      // Admin role changes are validated again by Firestore, independently of UI.
+      allow update: if isAdmin()
+        && request.auth.uid != userId
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['role'])
+        && request.resource.data.role in ['user', 'admin'];
+      allow delete: if false;
+    }
+
+    match /scans/{scanId} {
+      allow create: if signedIn()
+        && request.resource.data.uid == request.auth.uid;
+      allow read: if signedIn()
+        && (resource.data.uid == request.auth.uid || isAdmin());
+      allow update, delete: if false;
+    }
+  }
+}

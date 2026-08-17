@@ -8,7 +8,7 @@ import {
   TabListProps,
 } from 'expo-router/ui';
 import { useTranslation } from 'react-i18next';
-import { Pressable, useColorScheme, View, StyleSheet } from 'react-native';
+import { Pressable, useColorScheme, useWindowDimensions, View, StyleSheet } from 'react-native';
 
 import { ExternalLink } from './external-link';
 import { LanguageSwitcher } from './language-switcher';
@@ -59,26 +59,34 @@ export function CustomTabList(props: TabListProps) {
   const scheme = useColorScheme();
   const colors = Colors[scheme ?? 'light'];
   const { t } = useTranslation();
+  const { width } = useWindowDimensions();
   const isRTL = useIsRTL();
   const rowDirection = isRTL ? 'row-reverse' : 'row';
+  // The web app is displayed in a 480px-wide frame. Keep the navigation inside
+  // that frame instead of allowing the brand and documentation link to clip.
+  const isCompact = width <= 540;
 
   return (
-    <View {...props} style={[styles.tabListContainer, { flexDirection: rowDirection }]}>
-      <ThemedView type="backgroundElement" style={[styles.innerContainer, { flexDirection: rowDirection }]}>
-        <ThemedText type="smallBold" style={isRTL ? styles.brandTextRTL : styles.brandText}>
-          {t('common.appName')}
-        </ThemedText>
+    <View {...props} style={[styles.tabListContainer, isCompact && styles.tabListContainerCompact, { flexDirection: rowDirection }]}>
+      <ThemedView type="backgroundElement" style={[styles.innerContainer, isCompact && styles.innerContainerCompact, { flexDirection: rowDirection }]}>
+        {!isCompact && (
+          <ThemedText type="smallBold" style={isRTL ? styles.brandTextRTL : styles.brandText}>
+            {t('common.appName')}
+          </ThemedText>
+        )}
 
         {props.children}
 
         <LanguageSwitcher compact />
 
-        <ExternalLink href="https://docs.expo.dev" asChild>
-          <Pressable style={isRTL ? styles.externalPressableRTL : styles.externalPressable}>
-            <ThemedText type="link">{t('tabs.docs')}</ThemedText>
-            <Ionicons name="open-outline" color={colors.text} size={12} />
-          </Pressable>
-        </ExternalLink>
+        {!isCompact && (
+          <ExternalLink href="https://docs.expo.dev" asChild>
+            <Pressable style={isRTL ? styles.externalPressableRTL : styles.externalPressable}>
+              <ThemedText type="link">{t('tabs.docs')}</ThemedText>
+              <Ionicons name="open-outline" color={colors.text} size={12} />
+            </Pressable>
+          </ExternalLink>
+        )}
       </ThemedView>
     </View>
   );
@@ -92,6 +100,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  tabListContainerCompact: {
+    padding: Spacing.two,
+  },
   innerContainer: {
     paddingVertical: Spacing.two,
     paddingHorizontal: Spacing.five,
@@ -100,6 +111,12 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     gap: Spacing.two,
     maxWidth: MaxContentWidth,
+  },
+  innerContainerCompact: {
+    width: '100%',
+    paddingHorizontal: Spacing.two,
+    gap: Spacing.one,
+    justifyContent: 'center',
   },
   brandText: {
     marginRight: 'auto',
